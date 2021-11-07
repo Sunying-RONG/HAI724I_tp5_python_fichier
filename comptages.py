@@ -1,17 +1,16 @@
 import os, sys, re
 
+# parameter finish by /
 # liste = []
 dictionaire = {}
 def parcours(repertoire) :
     print("Je suis dans "+repertoire)
     liste = os.listdir(repertoire)
     for fichier in liste :
-        if os.path.isdir(repertoire+'/'+fichier) :
-            print('repo_path '+repertoire+'/'+fichier)
-            parcours(repertoire+'/'+fichier)
-        if os.path.isfile(repertoire+'/'+fichier) :
-            print('file_path '+repertoire+'/'+fichier)
-            if fichier.find(".") != -1
+        if os.path.isdir(repertoire+fichier) :
+            parcours(repertoire+fichier+'/')
+        if os.path.isfile(repertoire+fichier) and (not fichier.startswith('.')) :
+            if '.' in fichier :
                 data = fichier.split(".")
                 clefNew = '.'+data[1]
             else :
@@ -21,8 +20,12 @@ def parcours(repertoire) :
                     dictionaire[clef]=dictionaire[clef]+1
                     break
             else :
-                dictionaire[clefNew]]=1
+                dictionaire[clefNew]=1
            
-
 parcours(sys.argv[1])
-print(dictionaire)
+if 'pas de suffixe' in dictionaire :
+    dictionaire['pas de suffixe']=dictionaire.pop('pas de suffixe')
+    
+for (key, value) in dictionaire.items() :
+    print(key, ":", value)
+print('TOTAL', ':', len(dictionaire.keys()))
